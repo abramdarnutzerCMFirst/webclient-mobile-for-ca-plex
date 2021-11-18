@@ -21,7 +21,11 @@ new wcli.field.Text({
 	/(!If:/(!DataType)=Double)
 	new wcli.field.Number({
 	/(!Else)
-	new wcli.field.Integer({
+		/(!If:/(!DataType)=Time)
+		new wcli.field.Time({
+		/(!Else)
+		new wcli.field.Integer({
+		/(!If)
 	/(!If)
 /(!If)
 	id: "/(!NameID)",
@@ -32,7 +36,7 @@ new wcli.field.Text({
 	maxLength: /(!Length),
 	labelWidth: "40%",
 	// /(!LabelStyle:width=/(!Param:labelWidth):align=/(!Param:labelAlign):nc) 
-	value: /(!If:/(!DataType)=Char)/(!This)/(!Else)parseFloat(/(!This)).toFixed(/(!If:/(!Param:decimal))/(!Param:decimal)/(!Else)/(!DecLength)/(!If))/(!If) /(!AttachPoint:name=Extra:inlinetemplate) + ' ' + /(!If:/(!DataType)=Char)/(!This) /(!Else)parseFloat(/(!This)).toFixed(/(!If:/(!Param:decimal))/(!Param:decimal)/(!Else)/(!DecLength)/(!If)) /(!If)/(!AttachPoint) ,
+	value: /(!If:/(!DataType)=Char)/(!This)/(!Else)/(!If:/(!DataType)=Time)wcli.Time(/(!This))/(!Else)parseFloat(/(!This)).toFixed(/(!If:/(!Param:decimal))/(!Param:decimal)/(!Else)/(!DecLength)/(!If))/(!If)/(!If) /(!AttachPoint:name=Extra:inlinetemplate) + ' ' + /(!If:/(!DataType)=Char)/(!This) /(!Else)parseFloat(/(!This)).toFixed(/(!If:/(!Param:decimal))/(!Param:decimal)/(!Else)/(!DecLength)/(!If)) /(!If)/(!AttachPoint) ,
 	disabled: /(!If:/(!Mode)=Edit)false/(!Else)true/(!If),
 	extraControl: ([/(!AttachPoint:name=ExtraControl)]),
 	hidden: /(!If:/(!Property:Visible)=No)true/(!Else)false/(!If),
@@ -44,6 +48,9 @@ new wcli.field.Text({
 				/(!If)
 		},
 		blur: function() {
+				/(!If:/(!DataType)=Time)
+				this.setValue(wcli.checkFormat(this.getValue(), this.originalValue));
+				/(!If)
 				/(!If:/(!Event:phys=Lost Focus))
 				panel.submit(wcli.util.evt("Lost Focus", "/(!NameID)"));
 				/(!If)
@@ -52,6 +59,9 @@ new wcli.field.Text({
 				wcli.validateMaxLength("/(!NameID)");
 		},
 		keyup: function() {
+				/(!If:/(!DataType)=Time)
+				this.setValue(wcli.ChangeTime(this.getValue()));
+				/(!If)
 				/(!If:/(!Property:Case)=Upper)
 				this.setValue(this.getValue().toUpperCase());
 				/(!If)

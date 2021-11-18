@@ -27,15 +27,21 @@
 	/(!Action)
 /(!StatesArea)
 
-/(!JSInit)
-	 var grouped = "/(!Param:grouped)" === "true";
+(function() {
+	/(!NameID)_cols = [
+		/(!AttachPoint:name=ColumnsArea:inlinetemplate:sep=,)
+			{ colHeader: "/(!Text:htmlbr)",
+			  dataType: "/(!Edit:!DataType)"/(!If:/(!Edit:!Type)=Combo),
+			  options: /(!Edit:!jsonOptions),
+		      values: /(!Edit:!jsonValues)
+		      /(!If)
+			}
+		/(!EnableAction:SetState)
+		/(!AttachPoint)
+		];
+	var grouped = "/(!Param:grouped)" === "true";
 	/(!WebGrid-model.inc)
-/(!JSInit)
-
-/(!JS)
-	 var grouped = "/(!Param:grouped)" === "true";
-	/(!WebGrid-model.inc)
-/(!JS)
+})() ||
 
 /(!MainArea)
 {
@@ -45,16 +51,7 @@
 },
 /(!MainArea)
 
-(function() {
-		/(!NameID)_cols = [
-			/(!AttachPoint:name=ColumnsArea:inlinetemplate:sep=,)
-				{ colHeader: "/(!Text:htmlbr)",
-				  dataType: "/(!Edit:!DataType)"
-				}
-			/(!EnableAction:SetState)
-			/(!AttachPoint)
-		];
-})() ||
+
 
 /(!If:/(!Param:renderTplGenerator))
 new Ext.Panel({
